@@ -1,10 +1,33 @@
 load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
 
-js_test(
-    name = "coverage",
-    data = [
-        "coverage.js",
+ts_config(
+    name = "config",
+    src = "tsconfig.json"
+)
+
+ts_project(
+    name = "compile",
+    srcs = ["test_ts.ts", "coverage_ts.ts"],
+    transpiler = "tsc",
+    tsconfig = ":config",
+    declaration = True,
+    allow_js = False,
+    deps = [
+        "//:node_modules/c8",
+        "//:node_modules/tslib",
         "//:node_modules/@types/node",
     ],
-    entry_point = "test.js",
+)
+
+js_test(
+    name = "coverage_ts",
+    data = [":compile"],
+    entry_point = "test_ts.js",
+)
+
+js_test(
+    name = "coverage_js",
+    data = ["coverage_js.js"],
+    entry_point = "test_js.js",
 )

@@ -19,7 +19,7 @@
     "skipLibCheck": true,
     "downlevelIteration": true,
     "target": "es2021",
-    "types": ["node"],
-    "inlineSourceMap": true
+    "types": ["node", "jest"],
+    "sourceMap": true
   }
 }

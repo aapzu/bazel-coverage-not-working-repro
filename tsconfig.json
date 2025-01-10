@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["esnext", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "ignoreDeprecations": "5.0",
+    "strictPropertyInitialization": false,
+    "noImplicitReturns": false,
+    "declaration": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "downlevelIteration": true,
+    "target": "es2021",
+    "types": ["node"],
+    "sourceMap": true
+  }
+}

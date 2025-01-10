@@ -13,6 +13,17 @@ rules_ts_dependencies(
     ts_version_from = "//:package.json",
 )
 
+http_archive(
+    name = "aspect_rules_jest",
+    sha256 = "7fc6798dc566f8ec83867f636739716d81097bd3cead9c0fedb098c58fae6567",
+    strip_prefix = "rules_jest-0.22.0",
+    url = "https://github.com/aspect-build/rules_jest/releases/download/v0.22.0/rules_jest-v0.22.0.tar.gz",
+)
+
+load("@aspect_rules_jest//jest:dependencies.bzl", "rules_jest_dependencies")
+
+rules_jest_dependencies()
+
 load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
 
 rules_js_dependencies()

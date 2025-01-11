@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "c8": "^10.1.2",
-    "jest-junit": "^16.0.0",
     "ts-node": "^10.9.2"
   }
 }

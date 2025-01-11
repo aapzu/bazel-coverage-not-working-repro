@@ -1,7 +1,5 @@
 load("@aspect_rules_js//js:defs.bzl", "js_test", "js_info_files")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
-load("@npm//:jest-cli/package_json.bzl", "bin")
-
 
 ts_config(
     name = "config",
@@ -17,39 +15,18 @@ ts_project(
     allow_js = False,
     source_map = True,
     deps = [
-        "//:node_modules/c8",
         "//:node_modules/tslib",
+        "//:node_modules/ts-node",
         "//:node_modules/@types/node",
         "//:node_modules/@types/jest",
     ],
 )
 
-bin.jest_test(
-    name = "jest",
-    args = [
-        "--no-cache",
-        "--no-watchman",
-        "--ci",
-        "--colors",
-        "--config",
-        "./examples/foobar/jest.config.js",
-    ],
-    data = [
-        ":compile",
-        ":jest.config.js",
-    ],
-)
-
-
-js_info_files(
-    name = "compile_js",
-    srcs = [":compile"],
-)
-
 js_test(
     name = "foobar_ts",
-    data = ["test_ts.ts", "foobar_ts.ts"],
-    entry_point = "test_ts.js",
+    data = ["registerTsNode.js", "test_ts.ts", "foobar_ts.ts", "//:node_modules/ts-node"],
+    node_options = ["--require", "./$(location :registerTsNode.js)"],
+    entry_point = "test_ts.ts",
 )
 
 js_test(

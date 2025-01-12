@@ -6,9 +6,14 @@ ts_config(
     src = "tsconfig.json"
 )
 
+TS_FILES= [
+    "foobar_ts.ts",
+    "test_ts.ts",
+]
+
 ts_project(
     name = "compile",
-    srcs = ["test_ts.ts", "foobar_ts.ts"],
+    srcs = TS_FILES,
     transpiler = "tsc",
     tsconfig = ":config",
     declaration = True,
@@ -24,12 +29,14 @@ ts_project(
 
 js_test(
     name = "foobar_ts",
-    data = [":compile"],
+    data = [":compile"] + TS_FILES,
     entry_point = "test_ts.js",
+    # log_level = "debug",
 )
 
 js_test(
     name = "foobar_js",
     data = ["foobar_js.js"],
     entry_point = "test_js.js",
+    # log_level = "debug",
 )

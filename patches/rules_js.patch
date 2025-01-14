@@ -1,12 +1,26 @@
-diff --git a/js/private/js_binary.bzl b/js/private/js_binary.bzl
-index 5baa777..24168b5 100644
---- a/js/private/js_binary.bzl
-+++ b/js/private/js_binary.bzl      
-@@ -578,6 +578,7 @@ def _js_binary_impl(ctx):
-         # We have to propagate _lcov_merger runfiles since bazel does not treat _lcov_merger as a proper tool.
-         # See: https://github.com/bazelbuild/bazel/issues/4033
-         runfiles = runfiles.merge(ctx.attr._lcov_merger[DefaultInfo].default_runfiles)
-+        print(ctx.attr.data[0][DefaultInfo])
-         providers = [
-             coverage_common.instrumented_files_info(
-                 ctx,
+diff --git a/js/private/coverage/bundle/c8.js b/js/private/coverage/bundle/c8.js
+index f6498161..934a1e43 100644
+--- a/js/private/coverage/bundle/c8.js
++++ b/js/private/coverage/bundle/c8.js
+@@ -19,6 +19,7 @@ const include = fs
+     .toString('utf8')
+     .split('\n')
+     .filter((f) => f != '')
++    .map((f) => f.replace('bazel-out/darwin_arm64-fastbuild/bin/', ''))
+ 
+ // TODO: can or should we instrument files from other repositories as well?
+ // if so then the path.join call below will yield invalid paths since files will have external/wksp as their prefix.
+diff --git a/js/private/coverage/coverage.js b/js/private/coverage/coverage.js
+index fb5583a3..ff7b23e1 100644
+--- a/js/private/coverage/coverage.js
++++ b/js/private/coverage/coverage.js
+@@ -11042,7 +11042,8 @@ const include = require$$0$1
+     .readFileSync(process.env.COVERAGE_MANIFEST)
+     .toString('utf8')
+     .split('\n')
+-    .filter((f) => f != '');
++    .filter((f) => f != '')
++    .map((f) => f.replace('bazel-out/darwin_arm64-fastbuild/bin/', ''));
+ 
+ // TODO: can or should we instrument files from other repositories as well?
+ // if so then the path.join call below will yield invalid paths since files will have external/wksp as their prefix.

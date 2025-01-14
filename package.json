@@ -5,11 +5,9 @@
     "@bazel/buildifier": "latest",
     "@bazel/ibazel": "latest",
     "@bazel/typescript": "^3.5.1",
-    "@types/jest": "^29.5.14",
     "@types/node": "16.18.112",
     "chalk": "5.1.1",
     "inline-fixtures": "1.1.0",
-    "jest-cli": "^29.7.0",
     "jsonpath-plus": "7.2.0",
     "tslib": "^2.8.1",
     "typescript": "5.4.5"

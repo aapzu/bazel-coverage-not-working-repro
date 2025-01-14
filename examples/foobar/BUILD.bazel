@@ -23,7 +23,6 @@ ts_project(
         "//:node_modules/c8",
         "//:node_modules/tslib",
         "//:node_modules/@types/node",
-        "//:node_modules/@types/jest",
     ],
 )
 

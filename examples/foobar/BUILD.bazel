@@ -1,5 +1,7 @@
 load("@aspect_rules_js//js:defs.bzl", "js_test")
+load(":custom_js_test.bzl", "custom_js_test")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 
 ts_config(
     name = "config",
@@ -26,11 +28,11 @@ ts_project(
     ],
 )
 
-js_test(
+custom_js_test(
     name = "foobar_ts",
-    data = [":compile"] + TS_FILES,
+    data = [":compile"],
     entry_point = "test_ts.js",
-    log_level = "debug",
+    # log_level = "debug",
 )
 
 js_test(
@@ -38,4 +40,21 @@ js_test(
     data = ["foobar_js.js"],
     entry_point = "test_js.js",
     log_level = "debug",
+)
+
+sh_binary(
+    name = "merger",
+    srcs = ["merger.sh"],
+    visibility = ["//visibility:public"],
+)
+
+# keep
+bzl_library(
+    name = "custom_js_test",
+    srcs = ["custom_js_test.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@aspect_rules_js//js:libs",
+        "@bazel_skylib//lib:dicts",
+    ],
 )

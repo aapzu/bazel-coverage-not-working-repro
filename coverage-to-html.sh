@@ -16,7 +16,4 @@ genhtml "$INPUT" --output-directory "$OUTPUT"
 
 echo "Coverage report generated at $OUTPUT/index.html"
 
-echo "\
-Run \`
-  open \"$OUTPUT/index.html\"
-\` to view the report"
+open "$OUTPUT/index.html"

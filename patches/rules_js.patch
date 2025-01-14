@@ -24,3 +24,17 @@ index fb5583a3..ff7b23e1 100644
  
  // TODO: can or should we instrument files from other repositories as well?
  // if so then the path.join call below will yield invalid paths since files will have external/wksp as their prefix.
+diff --git a/js/private/js_binary.bzl b/js/private/js_binary.bzl
+index 5baa777d..60b25990 100644
+--- a/js/private/js_binary.bzl
++++ b/js/private/js_binary.bzl
+@@ -578,6 +578,9 @@ def _js_binary_impl(ctx):
+         # We have to propagate _lcov_merger runfiles since bazel does not treat _lcov_merger as a proper tool.
+         # See: https://github.com/bazelbuild/bazel/issues/4033
+         runfiles = runfiles.merge(ctx.attr._lcov_merger[DefaultInfo].default_runfiles)
++        runfiles = runfiles.merge(ctx.runfiles(
++            files = ctx.attr.data[0][InstrumentedFilesInfo].instrumented_files.to_list(),
++        ))
+         providers = [
+             coverage_common.instrumented_files_info(
+                 ctx,

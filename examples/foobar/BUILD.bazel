@@ -28,7 +28,7 @@ ts_project(
 
 js_test(
     name = "foobar_ts",
-    data = [":compile"] + TS_FILES,
+    data = [":compile"],
     entry_point = "test_ts.js",
     log_level = "debug",
 )

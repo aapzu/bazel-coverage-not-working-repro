@@ -1,18 +1,20 @@
-load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_test")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load(":mocha.bzl", "mocha_test")
 
 ts_config(
     name = "config",
     src = "tsconfig.json"
 )
 
-TS_FILES= [
-    "foobar_ts.ts",
-    "test_ts.ts",
-]
+TESTS = glob(["*.test.ts"])
+TS_FILES = glob(["*.ts"], exclude = TESTS)
+
+print(TESTS)
+print(TS_FILES)
 
 ts_project(
-    name = "compile",
+    name = "lib",
     srcs = TS_FILES,
     transpiler = "tsc",
     tsconfig = ":config",
@@ -20,22 +22,60 @@ ts_project(
     allow_js = False,
     source_map = True,
     deps = [
-        "//:node_modules/c8",
         "//:node_modules/tslib",
         "//:node_modules/@types/node",
+        "//:node_modules/chai",
+        "//:node_modules/@types/mocha",
+        "//:node_modules/@types/chai",
     ],
 )
 
-js_test(
-    name = "foobar_ts",
-    data = [":compile"],
-    entry_point = "test_ts.js",
-    log_level = "debug",
+ts_project(
+    name = "lib_test",
+    srcs = TESTS,
+    transpiler = "tsc",
+    tsconfig = ":config",
+    declaration = True,
+    allow_js = False,
+    source_map = True,
+    deps = [
+        ":lib",
+        "//:node_modules/tslib",
+        "//:node_modules/@types/node",
+        "//:node_modules/chai",
+        "//:node_modules/@types/mocha",
+        "//:node_modules/@types/chai",
+    ],
 )
 
-js_test(
-    name = "foobar_js",
-    data = ["foobar_js.js"],
-    entry_point = "test_js.js",
-    log_level = "debug",
+# mocha_test and js_tests cannot be uncommented at the same time
+# mocha_test(
+#     name = "mocha_test",
+#     tests = TESTS,
+#     data = ["lib"],
+#     tsconfig = ":config",
+#     mocharc = "mocharc.js",
+#     deps = []
+# )
+
+js_binary(
+    name = "bin",
+    data = [":lib"],
+    entry_point = "foobar.js",
+    # log_level = "debug",
 )
+
+# mocha_test and js_tests cannot be uncommented at the same time
+js_test(
+    name = "js_test",
+    data = [":lib", ":lib_test"],
+    entry_point = "foobar.test.js",
+    # log_level = "debug",
+)
+
+# js_test(
+#     name = "foobar_js",
+#     data = ["foobar_js.js"],
+#     entry_point = "test_js.js",
+#     # log_level = "debug",
+# )

@@ -6,7 +6,7 @@ index f6498161..934a1e43 100644
      .toString('utf8')
      .split('\n')
      .filter((f) => f != '')
-+    .map((f) => f.replace('bazel-out/darwin_arm64-fastbuild/bin/', ''))
++    .map((f) => f.replace(/^bazel-out\/[^/]+\/bin/, ''))
  
  // TODO: can or should we instrument files from other repositories as well?
  // if so then the path.join call below will yield invalid paths since files will have external/wksp as their prefix.
@@ -20,7 +20,7 @@ index fb5583a3..ff7b23e1 100644
      .split('\n')
 -    .filter((f) => f != '');
 +    .filter((f) => f != '')
-+    .map((f) => f.replace('bazel-out/darwin_arm64-fastbuild/bin/', ''));
++    .map((f) => f.replace(/^bazel-out\/[^/]+\/bin/, ''));
  
  // TODO: can or should we instrument files from other repositories as well?
  // if so then the path.join call below will yield invalid paths since files will have external/wksp as their prefix.

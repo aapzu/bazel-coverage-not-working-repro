@@ -1,75 +1,79 @@
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_test")
-load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config")
 load(":mocha.bzl", "mocha_test")
+load(":typescript.bzl", "ts_project_hoxapp_server")
 
 ts_config(
     name = "config",
-    src = "tsconfig.json"
+    src = "tsconfig.json",
 )
 
 TESTS = glob(["*.test.ts"])
-TS_FILES = glob(["*.ts"], exclude = TESTS)
 
-print(TESTS)
-print(TS_FILES)
+TS_FILES = glob(
+    ["*.ts"],
+    exclude = TESTS,
+)
 
-ts_project(
+ts_project_hoxapp_server(
     name = "lib",
     srcs = TS_FILES,
-    transpiler = "tsc",
-    tsconfig = ":config",
-    declaration = True,
     allow_js = False,
     source_map = True,
+    tsconfig = ":config",
     deps = [
-        "//:node_modules/tslib",
+        "//:node_modules/@types/chai",
+        "//:node_modules/@types/mocha",
         "//:node_modules/@types/node",
         "//:node_modules/chai",
-        "//:node_modules/@types/mocha",
-        "//:node_modules/@types/chai",
+        "//:node_modules/tslib",
     ],
 )
 
-ts_project(
-    name = "lib_test",
-    srcs = TESTS,
-    transpiler = "tsc",
-    tsconfig = ":config",
-    declaration = True,
-    allow_js = False,
-    source_map = True,
-    deps = [
-        ":lib",
-        "//:node_modules/tslib",
-        "//:node_modules/@types/node",
-        "//:node_modules/chai",
-        "//:node_modules/@types/mocha",
-        "//:node_modules/@types/chai",
-    ],
-)
-
-# mocha_test and js_tests cannot be uncommented at the same time
-# mocha_test(
-#     name = "mocha_test",
-#     tests = TESTS,
-#     data = ["lib"],
+#region js_test
+# mocha_test and js_test regions cannot be uncommented at the same time
+# ts_project(
+#     name = "lib_test",
+#     srcs = TESTS,
+#     transpiler = "tsc",
 #     tsconfig = ":config",
-#     mocharc = "mocharc.js",
-#     deps = []
+#     declaration = True,
+#     allow_js = False,
+#     source_map = True,
+#     deps = [
+#         ":lib",
+#         "//:node_modules/tslib",
+#         "//:node_modules/@types/node",
+#         "//:node_modules/chai",
+#         "//:node_modules/@types/mocha",
+#         "//:node_modules/@types/chai",
+#     ],
 # )
+# js_test(
+#     name = "test",
+#     data = [":lib", ":lib_test"],
+#     entry_point = "foobar.test.js",
+#     # log_level = "debug",
+# )
+#endregion
+
+#region mocha_test
+# mocha_test and js_tests cannot be uncommented at the same time
+mocha_test(
+    name = "test",
+    data = ["lib"],
+    log_level = "debug",
+    mocharc = "mocharc.js",
+    test_srcs = TESTS,
+    tsconfig = ":config",
+    deps = [],
+)
+#endregion
 
 js_binary(
     name = "bin",
     data = [":lib"],
     entry_point = "foobar.js",
-    # log_level = "debug",
-)
-
-# mocha_test and js_tests cannot be uncommented at the same time
-js_test(
-    name = "js_test",
-    data = [":lib", ":lib_test"],
-    entry_point = "foobar.test.js",
     # log_level = "debug",
 )
 

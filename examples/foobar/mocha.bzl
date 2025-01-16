@@ -25,8 +25,8 @@ MOCHA_DEPS = [
     "//:node_modules/source-map-support",
 ]
 
-def mocha_test(name, tests, data, mocharc, tsconfig, deps, env = {}, **kwargs):
-    batches = split_srcs_to_batches(tests, "unit_test_batch", 1, 1)
+def mocha_test(name, test_srcs, data, mocharc, tsconfig, deps, env = {}, **kwargs):
+    batches = split_srcs_to_batches(test_srcs, "unit_test_batch", 1, 1)
 
     args = [
         "--config $(location %s)" % mocharc,
@@ -47,7 +47,7 @@ def mocha_test(name, tests, data, mocharc, tsconfig, deps, env = {}, **kwargs):
             declaration = True,
             allow_js = False,
             source_map = True,
-            deps = deps + [
+            deps = deps + data + [
                 "//:node_modules/@types/chai",
                 "//:node_modules/@types/mocha",
                 "//:node_modules/@types/node",
@@ -55,7 +55,6 @@ def mocha_test(name, tests, data, mocharc, tsconfig, deps, env = {}, **kwargs):
                 "//:node_modules/tslib",
             ],
         )
-        tests.append(final_test_name)
         bin.mocha_test(
             name = final_test_name,
             args = args + kwargs.pop("args", []),
@@ -69,9 +68,9 @@ def mocha_test(name, tests, data, mocharc, tsconfig, deps, env = {}, **kwargs):
             env = env,
             **kwargs
         )
+        tests.append(final_test_name)
 
     native.test_suite(
         name = name,
         tests = tests,
-        **kwargs
     )

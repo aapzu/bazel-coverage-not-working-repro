@@ -2,6 +2,4 @@ common --enable_workspace
 common --@aspect_rules_ts//ts:skipLibCheck=always
 
 test     --combined_report=lcov --instrument_test_targets --sandbox_debug --nocache_test_results --test_output=all
-coverage --combined_report=lcov --instrument_test_targets --sandbox_debug --nocache_test_results --test_output=all
-
-build --nocache_test_results
+coverage --combined_report=lcov --instrument_test_targets --sandbox_debug --nocache_test_results --test_output=all --experimental_collect_code_coverage_for_generated_files

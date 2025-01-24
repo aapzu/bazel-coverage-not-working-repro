@@ -1,11 +1,20 @@
 {
   "private": true,
+  "scripts": {
+    "clean": "bazelisk clean",
+    "coverage:all": "bazelisk coverage //...",
+    "create-coverage-html": "./coverage-to-html.sh",
+    "generate-files": "N=1000 FILE_SIZE=10 pnpm tsx generateFilesAndTests.ts"
+  },
   "devDependencies": {
     "@bazel/bazelisk": "latest",
     "@bazel/buildifier": "latest",
     "@bazel/ibazel": "latest",
     "@bazel/typescript": "^3.5.1",
+    "@types/chai": "^4.2.0",
+    "@types/mocha": "^10.0.10",
     "@types/node": "16.18.112",
+    "chai": "^4.2.5",
     "chalk": "5.1.1",
     "inline-fixtures": "1.1.0",
     "jsonpath-plus": "7.2.0",
@@ -13,7 +22,17 @@
     "typescript": "5.4.5"
   },
   "dependencies": {
-    "c8": "^10.1.2",
-    "ts-node": "^10.9.2"
+    "@swc/core": "1.4.0",
+    "@types/istanbul-lib-coverage": "^2.0.6",
+    "@types/istanbul-lib-report": "^3.0.3",
+    "@types/istanbul-reports": "^3.0.4",
+    "istanbul-lib-coverage": "^3.2.2",
+    "istanbul-lib-report": "^3.0.1",
+    "istanbul-reports": "^3.1.7",
+    "mocha": "^11.0.1",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
+    "v8-to-istanbul": "^9.3.0"
   }
 }

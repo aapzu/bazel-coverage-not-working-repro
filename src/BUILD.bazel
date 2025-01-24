@@ -1,0 +1,45 @@
+load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_config", "ts_project")
+load(":mocha.bzl", "mocha_test")
+
+ts_config(
+    name = "config",
+    src = "tsconfig.json",
+)
+
+TESTS = glob(["**/*.test.ts"])
+
+SRCS = glob(
+    ["**/*.ts"],
+    exclude = TESTS,
+)
+
+ts_project(
+    name = "lib",
+    srcs = SRCS,
+    allow_js = False,
+    declaration = True,
+    source_map = True,
+    transpiler = "tsc",
+    tsconfig = ":config",
+    deps = [
+        "//:node_modules/@types/chai",
+        "//:node_modules/@types/mocha",
+        "//:node_modules/@types/node",
+        "//:node_modules/chai",
+        "//:node_modules/tslib",
+        "//:node_modules/v8-to-istanbul",
+    ],
+)
+
+mocha_test(
+    name = "test",
+    data = [
+        "lib",
+    ],
+    log_level = "debug",
+    mocharc = "mocharc.js",
+    test_srcs = TESTS,
+    tsconfig = ":config",
+    deps = ["//:node_modules/v8-to-istanbul"],
+)

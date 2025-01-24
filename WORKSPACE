@@ -1,3 +1,5 @@
+workspace(name = "bazel_coverage_not_working_repro")
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
@@ -16,7 +18,6 @@ http_archive(
     strip_prefix = "rules_js-1.34.0",
     url = "https://github.com/aspect-build/rules_js/releases/download/v1.34.0/rules_js-v1.34.0.tar.gz",
 )
-
 
 load("@aspect_rules_ts//ts:repositories.bzl", "rules_ts_dependencies")
 

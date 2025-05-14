@@ -1,9 +1,6 @@
 bazel-*
 node_modules
 
-# Generated files
-src/__generated__
-
 # Some possible coverage files
 coverage-report
 genhtml
